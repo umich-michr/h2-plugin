@@ -1,5 +1,8 @@
 H2 Gradle Plugin
 -----------------
+[![Build Status](https://travis-ci.org/umich-michr/h2-gradle-plugin.svg?branch=master)](https://travis-ci.org/umich-michr/h2-gradle-plugin)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=umich-michr_h2-gradle-plugin&metric=alert_status)](https://sonarcloud.io/dashboard?id=umich-michr_h2-gradle-plugin)
+
 A plugin for [Gradle](https://gradle.org) that allows you to use [H2](https://www.h2database.com) during the build process. 
 This allows you to use additional plugins like [Liquibase](https://www.liquibase.org/), [Flyaway](https://flywaydb.org/), etc.
 to prepopulate the H2 database before starting your application.

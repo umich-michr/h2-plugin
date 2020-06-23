@@ -4,7 +4,7 @@ plugins {
   `maven-publish`
   jacoco
   id("pl.droidsonroids.jacoco.testkit") version "1.0.7"
-  id("org.sonarqube") version "2.8"
+  id("org.sonarqube") version "3.0"
 }
 
 group = "edu.umich.med.michr"
@@ -74,6 +74,7 @@ tasks.jacocoTestCoverageVerification {
 sonarqube {
   properties {
     property("sonar.projectKey", "umich-michr_h2-gradle-plugin")
+    property("sonar.projectName", "Gradle H2 plugin")
   }
 }
 
@@ -86,7 +87,7 @@ gradlePlugin {
   plugins {
     create("h2Plugin") {
       id = "edu.umich.med.michr.h2-plugin"
-      displayName = "Gradle H2 Plugin"
+      displayName = "Gradle H2 plugin"
       description = project.description
       implementationClass = "edu.umich.med.michr.gradle.H2Plugin"
     }
@@ -105,7 +106,7 @@ publishing {
   publications {
     create<MavenPublication>("mavenJava") {
       pom {
-        name.set("Gradle H2 Plugin")
+        name.set("Gradle H2 plugin")
         description.set(project.description)
         url.set("https://github.com/umich-michr/h2-gradle-plugin")
         packaging = "jar"
