@@ -4,6 +4,7 @@ plugins {
   `maven-publish`
   jacoco
   id("pl.droidsonroids.jacoco.testkit") version "1.0.7"
+  id("org.sonarqube") version "2.8"
 }
 
 group = "edu.umich.med.michr"
@@ -67,6 +68,12 @@ tasks.jacocoTestCoverageVerification {
         minimum = "0.9".toBigDecimal()
       }
     }
+  }
+}
+
+sonarqube {
+  properties {
+    property("sonar.projectKey", "umich-michr_h2-gradle-plugin")
   }
 }
 

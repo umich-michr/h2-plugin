@@ -1,0 +1,10 @@
+language: java
+
+addons:
+  sonarcloud:
+    organization: "umich-michr"
+    token:
+      secure: $SONAR_TOKEN
+
+script:
+  - ./gradlew sonarqube
