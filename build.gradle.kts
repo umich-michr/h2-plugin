@@ -1,3 +1,6 @@
+import java.awt.GridLayout
+import javax.swing.*
+
 plugins {
   `java-gradle-plugin`
   id("com.gradle.plugin-publish") version "0.12.0"
@@ -71,9 +74,62 @@ tasks.jacocoTestCoverageVerification {
   }
 }
 
+gradle.taskGraph.whenReady {
+  if (hasTask(":sonarqube")) {
+    var sonarToken = System.getenv("SONAR_TOKEN")
+    var sonarProjectKey = System.getenv("SONAR_PROJECT_KEY")
+
+    // If we don't have the system environment variables set prompt the user for them.
+    if (sonarToken == null || sonarProjectKey == null) {
+      // Create the labels and text fields.
+      val sonarProjectKeyLabel = JLabel("Sonar Project Key: ", JLabel.RIGHT)
+      val sonarProjectKeyField = JTextField(sonarProjectKey)
+      val sonarTokenLabel = JLabel("Sonar Token: ", JLabel.RIGHT)
+      val sonarTokenField: JTextField = JPasswordField(sonarToken)
+
+      // Create the panels and configure the layout
+      val sonarqubePanel = JPanel(false)
+      sonarqubePanel.layout = BoxLayout(sonarqubePanel, BoxLayout.X_AXIS)
+      val labelPanel = JPanel(false)
+      labelPanel.layout = GridLayout(0, 1)
+      labelPanel.add(sonarProjectKeyLabel)
+      labelPanel.add(sonarTokenLabel)
+      val fieldPanel = JPanel(false)
+      fieldPanel.layout = GridLayout(0, 1)
+      fieldPanel.add(sonarProjectKeyField)
+      fieldPanel.add(sonarTokenField)
+      sonarqubePanel.add(labelPanel)
+      sonarqubePanel.add(fieldPanel)
+
+      // Enter connection information or quit
+      if (JOptionPane.showOptionDialog(null, sonarqubePanel,
+              "Sonarqube connection",
+              JOptionPane.OK_CANCEL_OPTION,
+              JOptionPane.PLAIN_MESSAGE,
+              null, arrayOf("Okay", "Cancel"),
+              "Okay") != 0) {
+        throw StopExecutionException("User canceled sonarqube")
+      }
+
+      sonarProjectKey = sonarProjectKeyField.text
+      sonarToken = sonarTokenField.text
+
+      if (sonarProjectKey.isBlank() || sonarToken.isBlank()) {
+        throw StopExecutionException("Must provide a project key and token!")
+      }
+
+      project.sonarqube.properties {
+        property("sonar.projectKey", sonarProjectKey)
+        property("sonar.login", sonarToken)
+      }
+    }
+  }
+}
+
 sonarqube {
   properties {
-    property("sonar.projectKey", "umich-michr_h2-gradle-plugin")
+    property("sonar.host.url", "https://sonarcloud.io")
+    property("sonar.organization", "umich-michr")
     property("sonar.projectName", "Gradle H2 plugin")
   }
 }
