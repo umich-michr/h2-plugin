@@ -7,4 +7,4 @@ addons:
       secure: $SONAR_TOKEN
 
 script:
-  - ./gradlew sonarqube
+  - ./gradlew sonarqube -Dsonar.login=$SONAR_TOKEN -Dsonar.projectKey=$SONAR_PROJECT_KEY
