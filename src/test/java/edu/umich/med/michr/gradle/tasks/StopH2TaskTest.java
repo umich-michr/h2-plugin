@@ -61,7 +61,7 @@ class StopH2TaskTest {
 
   @Test
   @DisplayName("Stop H2 Database")
-  public void h2StopTaskTest() throws IOException {
+  void testH2StopTask() throws IOException {
     // Start the H2 database to be stopped
     startH2();
 
@@ -75,7 +75,7 @@ class StopH2TaskTest {
 
   @Test
   @DisplayName("Fails to stop H2 Database when H2 is not running.")
-  public void h2StopTaskExceptionTest() throws IOException {
+  void testH2StopTaskException() throws IOException {
     Path buildGradle = createGradleBuildFiles(temporaryProjectDirectory);
     GradleRunner gradleRunner = setupGradleTask(temporaryProjectDirectory, STOP_TASK);
     BuildResult buildResult = gradleRunner.buildAndFail();
@@ -86,7 +86,7 @@ class StopH2TaskTest {
 
   @Test
   @DisplayName("Stop H2 Database with user configured TCP port")
-  public void h2ExtensionTcpPortTest() throws IOException {
+  void testH2ExtensionTcpPort() throws IOException {
     int port = 8181;
     // Start the H2 database to be stopped
     startH2(port);

@@ -63,7 +63,7 @@ class StartH2TaskTest {
 
   @Test
   @DisplayName("Start H2 Database")
-  void h2StartTaskTest() throws IOException {
+  void testH2StartTask() throws IOException {
     Path buildGradle = createGradleBuildFiles(temporaryProjectDirectory);
     GradleRunner gradleRunner = setupGradleTask(temporaryProjectDirectory, START_TASK);
     BuildResult buildResult = gradleRunner.build();
@@ -77,7 +77,7 @@ class StartH2TaskTest {
 
   @Test
   @DisplayName("Fails to start H2 Database when port is in use")
-  void h2StartTaskExceptionTest() throws IOException {
+  void testH2StartTaskException() throws IOException {
     // Open socket on default TCP port to block H2 from starting
     ServerSocket serverSocket = new ServerSocket(DEFAULT_TCP_PORT);
     Path buildGradle = createGradleBuildFiles(temporaryProjectDirectory);
@@ -94,7 +94,7 @@ class StartH2TaskTest {
 
   @Test
   @DisplayName("Start H2 Database with user configured TCP port")
-  public void h2ExtensionTcpPortTest() throws IOException {
+  void testH2ExtensionTcpPort() throws IOException {
     int port = 8181;
     String buildFileDependencies = String.format("h2 { tcpPort = %d }", port);
     createGradleBuildFiles(temporaryProjectDirectory, buildFileDependencies);

@@ -19,7 +19,6 @@ package edu.umich.med.michr.gradle;
 import org.gradle.testkit.runner.BuildResult;
 import org.gradle.testkit.runner.BuildTask;
 import org.gradle.testkit.runner.GradleRunner;
-import org.junit.jupiter.api.BeforeEach;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -78,8 +77,8 @@ public class GradleFunctionalTestHelper {
   }
 
   /**
-   * Creates the Gradle build files settings.gradle.kts and build.gradle.kts. These files are configured to test
-   * the H2 plugin. It returns the build.gradle.kts file so it can be appended to for additional setup.
+   * Creates the Gradle build files settings.gradle.kts and build.gradle.kts. These files are configured to test the H2
+   * plugin. It returns the build.gradle.kts file so it can be appended to for additional setup.
    *
    * @param directory The directory to put settings.gradle.kts and build.gradle.kts
    * @return Path The path for the build.gradle.kts file
@@ -97,10 +96,10 @@ public class GradleFunctionalTestHelper {
   }
 
   /**
-   * Creates the Gradle build files settings.gradle.kts and build.gradle.kts. These files are configured to test
-   * the H2 plugin. It appends {@code appendToBuildGradle} to the end of the build.gradle.kts file.
+   * Creates the Gradle build files settings.gradle.kts and build.gradle.kts. These files are configured to test the H2
+   * plugin. It appends {@code appendToBuildGradle} to the end of the build.gradle.kts file.
    *
-   * @param directory The directory to put settings.gradle.kts and build.gradle.kts
+   * @param directory           The directory to put settings.gradle.kts and build.gradle.kts
    * @param appendToBuildGradle The string to appended to the end of build.gradle.kts file
    * @throws IOException Thrown if unable to write to the temporary directory
    */

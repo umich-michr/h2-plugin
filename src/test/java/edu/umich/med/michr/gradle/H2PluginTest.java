@@ -32,31 +32,31 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * H2 Gradle Plugin testing
  */
 @DisplayName("H2 Gradle Plugin")
-public class H2PluginTest {
+class H2PluginTest {
   private static final String DEPENDENCIES_TASK = "dependencies";
   @TempDir
   static Path temporaryProjectDirectory;
 
   @Test
-  @DisplayName("Check H2 Database default dependency")
-  public void h2DefaultDependencyCheckTest() throws IOException {
+  @DisplayName("H2 Database default dependency")
+  void testH2DefaultDependency() throws IOException {
     Path buildGradle = createGradleBuildFiles(temporaryProjectDirectory);
     GradleRunner gradleRunner = setupGradleTask(temporaryProjectDirectory, DEPENDENCIES_TASK);
     BuildResult buildResult = gradleRunner.build();
 
     assertGradleTaskSuccess(buildResult, DEPENDENCIES_TASK);
-    assertTrue(buildResult.getOutput().contains("com.h2database:h2:1.4.200"));
+    assertTrue(buildResult.getOutput().contains("com.h2database:h2:1.4.200"), "H2 dependency missing");
   }
 
   @Test
-  @DisplayName("Check H2 Database user configured dependency")
-  public void h2DependencyCheckTest() throws IOException {
+  @DisplayName("H2 Database user configured dependency")
+  void testH2UserOverrideDependency() throws IOException {
     String buildFileDependencies = "dependencies {\"h2\"(\"com.h2database:h2:1.4.197\")}";
     createGradleBuildFiles(temporaryProjectDirectory, buildFileDependencies);
     GradleRunner gradleRunner = setupGradleTask(temporaryProjectDirectory, DEPENDENCIES_TASK);
     BuildResult buildResult = gradleRunner.build();
 
     assertGradleTaskSuccess(buildResult, DEPENDENCIES_TASK);
-    assertTrue(buildResult.getOutput().contains("com.h2database:h2:1.4.197"));
+    assertTrue(buildResult.getOutput().contains("com.h2database:h2:1.4.197"), "H2 dependency missing");
   }
 }
