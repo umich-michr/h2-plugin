@@ -76,34 +76,37 @@ tasks.jacocoTestCoverageVerification {
 
 gradle.taskGraph.whenReady {
   if (hasTask(":sonarqube")) {
-    var sonarToken = System.getenv("SONAR_TOKEN")
-    var sonarProjectKey = System.getenv("SONAR_PROJECT_KEY")
+    val sonarTokenEnvironment = System.getenv("SONAR_TOKEN")
+    val sonarTokenProperty = System.getProperty("sonar.login")
+    val sonarToken: String
 
-    // If we don't have the system environment variables set prompt the user for them.
-    if (sonarToken == null || sonarProjectKey == null) {
+    // Check for a Sonarqube token first in System environment, then Gradle system property, then prompt user
+    if (sonarTokenEnvironment != null) {
+      sonarToken = sonarTokenEnvironment
+    } else if (sonarTokenProperty != null) {
+      sonarToken = sonarTokenProperty
+    } else {
+      // We don't have a Sonarqube token stored, so we are prompting the user
+
       // Create the labels and text fields.
-      val sonarProjectKeyLabel = JLabel("Sonar Project Key: ", JLabel.RIGHT)
-      val sonarProjectKeyField = JTextField(sonarProjectKey)
       val sonarTokenLabel = JLabel("Sonar Token: ", JLabel.RIGHT)
-      val sonarTokenField: JTextField = JPasswordField(sonarToken)
+      val sonarTokenField: JTextField = JPasswordField("", 25)
 
       // Create the panels and configure the layout
       val sonarqubePanel = JPanel(false)
       sonarqubePanel.layout = BoxLayout(sonarqubePanel, BoxLayout.X_AXIS)
       val labelPanel = JPanel(false)
       labelPanel.layout = GridLayout(0, 1)
-      labelPanel.add(sonarProjectKeyLabel)
       labelPanel.add(sonarTokenLabel)
       val fieldPanel = JPanel(false)
       fieldPanel.layout = GridLayout(0, 1)
-      fieldPanel.add(sonarProjectKeyField)
       fieldPanel.add(sonarTokenField)
       sonarqubePanel.add(labelPanel)
       sonarqubePanel.add(fieldPanel)
 
-      // Enter connection information or quit
+      // Enter Sonarqube token or quit
       if (JOptionPane.showOptionDialog(null, sonarqubePanel,
-              "Sonarqube connection",
+              "Sonarqube login",
               JOptionPane.OK_CANCEL_OPTION,
               JOptionPane.PLAIN_MESSAGE,
               null, arrayOf("Okay", "Cancel"),
@@ -111,17 +114,15 @@ gradle.taskGraph.whenReady {
         throw StopExecutionException("User canceled sonarqube")
       }
 
-      sonarProjectKey = sonarProjectKeyField.text
       sonarToken = sonarTokenField.text
 
-      if (sonarProjectKey.isBlank() || sonarToken.isBlank()) {
-        throw StopExecutionException("Must provide a project key and token!")
+      if (sonarToken.isBlank()) {
+        throw StopExecutionException("You must provide a valid Sonarqube token!")
       }
+    }
 
-      project.sonarqube.properties {
-        property("sonar.projectKey", sonarProjectKey)
-        property("sonar.login", sonarToken)
-      }
+    project.sonarqube.properties {
+      property("sonar.login", sonarToken)
     }
   }
 }
@@ -130,6 +131,7 @@ sonarqube {
   properties {
     property("sonar.host.url", "https://sonarcloud.io")
     property("sonar.organization", "umich-michr")
+    property("sonar.projectKey", "umich-michr_h2-gradle-plugin")
     property("sonar.projectName", "Gradle H2 plugin")
   }
 }
