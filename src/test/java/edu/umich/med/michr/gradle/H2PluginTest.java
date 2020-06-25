@@ -40,7 +40,7 @@ class H2PluginTest {
   @Test
   @DisplayName("H2 Database default dependency")
   void testH2DefaultDependency() throws IOException {
-    Path buildGradle = createGradleBuildFiles(temporaryProjectDirectory);
+    createGradleBuildFiles(temporaryProjectDirectory);
     GradleRunner gradleRunner = setupGradleTask(temporaryProjectDirectory, DEPENDENCIES_TASK);
     BuildResult buildResult = gradleRunner.build();
 

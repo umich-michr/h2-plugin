@@ -21,17 +21,13 @@ import org.gradle.api.logging.Logging;
 import org.gradle.testkit.runner.BuildResult;
 import org.gradle.testkit.runner.GradleRunner;
 import org.h2.tools.Server;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.sql.SQLException;
 
 import static edu.umich.med.michr.gradle.GradleFunctionalTestHelper.*;
@@ -64,7 +60,7 @@ class StartH2TaskTest {
   @Test
   @DisplayName("Start H2 Database")
   void testH2StartTask() throws IOException {
-    Path buildGradle = createGradleBuildFiles(temporaryProjectDirectory);
+    createGradleBuildFiles(temporaryProjectDirectory);
     GradleRunner gradleRunner = setupGradleTask(temporaryProjectDirectory, START_TASK);
     BuildResult buildResult = gradleRunner.build();
 
@@ -80,7 +76,7 @@ class StartH2TaskTest {
   void testH2StartTaskException() throws IOException {
     // Open socket on default TCP port to block H2 from starting
     ServerSocket serverSocket = new ServerSocket(DEFAULT_TCP_PORT);
-    Path buildGradle = createGradleBuildFiles(temporaryProjectDirectory);
+    createGradleBuildFiles(temporaryProjectDirectory);
     GradleRunner gradleRunner = setupGradleTask(temporaryProjectDirectory, START_TASK);
     BuildResult buildResult = gradleRunner.buildAndFail();
     serverSocket.close();

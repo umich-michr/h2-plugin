@@ -38,6 +38,12 @@ public class StopH2Task extends DefaultTask {
   private final Property<Integer> tcpPort;
   private final Property<String> tcpPassword;
 
+  @Inject
+  public StopH2Task(ObjectFactory objectFactory) {
+    this.tcpPort = objectFactory.property(Integer.class);
+    this.tcpPassword = objectFactory.property(String.class);
+  }
+
   @Input
   public Property<Integer> getTcpPort() {
     return tcpPort;
@@ -46,12 +52,6 @@ public class StopH2Task extends DefaultTask {
   @Input
   public Property<String> getTcpPassword() {
     return tcpPassword;
-  }
-
-  @Inject
-  public StopH2Task(ObjectFactory objectFactory) {
-    this.tcpPort = objectFactory.property(Integer.class);
-    this.tcpPassword = objectFactory.property(String.class);
   }
 
   /**

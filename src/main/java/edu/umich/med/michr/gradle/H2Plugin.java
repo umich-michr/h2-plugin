@@ -70,7 +70,7 @@ public class H2Plugin implements Plugin<Project> {
    * @param project The project to enhance
    */
   void applyTasks(Project project, H2PluginExtension extension) {
-    project.getTasks().register("startH2", StartH2Task.class, startH2Task -> {
+    project.getTasks().register("startH2", StartH2Task.class, (StartH2Task startH2Task) -> {
       startH2Task.setGroup(H2_CONFIGURATION_NAME);
       startH2Task.setDescription("Starts the H2 database.");
       startH2Task.getTcpPort().set(extension.getTcpPort());
@@ -78,7 +78,7 @@ public class H2Plugin implements Plugin<Project> {
       startH2Task.getWebPort().set(extension.getWebPort());
     });
 
-    project.getTasks().register("stopH2", StopH2Task.class, stopH2Task -> {
+    project.getTasks().register("stopH2", StopH2Task.class, (StopH2Task stopH2Task) -> {
       stopH2Task.setGroup(H2_CONFIGURATION_NAME);
       stopH2Task.setDescription("Stops the H2 database.");
       stopH2Task.getTcpPort().set(extension.getTcpPort());

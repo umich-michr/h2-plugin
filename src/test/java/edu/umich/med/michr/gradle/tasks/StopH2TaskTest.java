@@ -50,8 +50,6 @@ class StopH2TaskTest {
   }
 
   private void startH2(int port, String tcpPassword) {
-    String connectionUrl = "tcp://localhost:" + port;
-
     try {
       Server.createTcpServer("-tcpPort", String.valueOf(port), "-tcpPassword", tcpPassword).start();
     } catch (SQLException throwables) {
@@ -65,7 +63,7 @@ class StopH2TaskTest {
     // Start the H2 database to be stopped
     startH2();
 
-    Path buildGradle = createGradleBuildFiles(temporaryProjectDirectory);
+    createGradleBuildFiles(temporaryProjectDirectory);
     GradleRunner gradleRunner = setupGradleTask(temporaryProjectDirectory, STOP_TASK);
     BuildResult buildResult = gradleRunner.build();
 
@@ -76,7 +74,7 @@ class StopH2TaskTest {
   @Test
   @DisplayName("Fails to stop H2 Database when H2 is not running.")
   void testH2StopTaskException() throws IOException {
-    Path buildGradle = createGradleBuildFiles(temporaryProjectDirectory);
+    createGradleBuildFiles(temporaryProjectDirectory);
     GradleRunner gradleRunner = setupGradleTask(temporaryProjectDirectory, STOP_TASK);
     BuildResult buildResult = gradleRunner.buildAndFail();
 
