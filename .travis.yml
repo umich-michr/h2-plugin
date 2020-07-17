@@ -1,1 +1,9 @@
 language: java
+
+addons:
+  sonarcloud:
+    token:
+      secure: "n7dyj/bUOLgKePl9/kC2tkv2Bi9ZFRcoHmC/fU9U+KlwpBKfdEm+wBgKhTmoN4Ig2F14XWpgD0QMGKiGEcL9+zbwhz7tPSU4Cmo1DVQDXD9EHLAfgDLWrTETHVSa7RRdmN+to+ChgB1ybDpoAaZmFD3QRG3NSZfNmWFcnzf/ZrIF9Dkm0+u5b5wQwK29b/ouHq2h6OV3hLDKBOzOEXzTQQSQW4iMydSp2xgjcdIK/iUHkwUHn+aPDkmrRkYXbIondI29sjBvkcZQ+4UNp+gW2OZ5BOqwLArYr7eGmxx3P6SeUvxX1IIrAQpNRj2bxeHPgeSM9mPFlvo+22x31TBTn4RdgBCgo8kZqMiFVIgtjc6prkEbRqvso9OzAlVOcZQSQjOOM3Iqs2E6WcaS5gYwHkimmJGYgvzK65r1ZAqpLUaRI70wTaVYHGxuGGMsxLYxqO9MivJh/YN7U+qqsBqtbiLG53ieffLniC1fayShMPhJDwIYEG5/Pu+erDxYS+f5vwLLL3wugmapX45ltRYz1JLnl/me3XaGSKx7+r7gBLXBL4jtsIJeml2+wV62fVurUJaXPRgjqgxaYZ07NYb899SfmvT+C2XMNx2dL60G6oTtTZltn7VD3MnOHR8+RbgBltwDuYQu+iD9/pi0vUXbujSQyrTjcTm6ecGR7a/rKnY="
+
+script:
+  - "./gradlew sonarqube"
