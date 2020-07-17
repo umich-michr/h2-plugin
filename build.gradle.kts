@@ -74,6 +74,14 @@ tasks.jacocoTestCoverageVerification {
   }
 }
 
+tasks.sonarqube {
+  dependsOn(tasks.jacocoTestReport)
+}
+
+tasks.check {
+  dependsOn(tasks.jacocoTestCoverageVerification)
+}
+
 gradle.taskGraph.whenReady {
   if (hasTask(":sonarqube")) {
     val sonarTokenEnvironment = System.getenv("SONAR_TOKEN")
@@ -134,10 +142,6 @@ sonarqube {
     property("sonar.projectKey", "umich-michr_h2-gradle-plugin")
     property("sonar.projectName", "Gradle H2 plugin")
   }
-}
-
-tasks.check {
-  dependsOn(tasks.jacocoTestCoverageVerification)
 }
 
 // Configure the java-gradle-plugin. Note that the ID must match it's Gradle Plugin Portal id.
