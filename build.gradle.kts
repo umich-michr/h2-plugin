@@ -3,15 +3,15 @@ import javax.swing.*
 
 plugins {
   `java-gradle-plugin`
-  id("com.gradle.plugin-publish") version "0.12.0"
+  id("com.gradle.plugin-publish") version "0.18.0"
   `maven-publish`
   jacoco
-  id("pl.droidsonroids.jacoco.testkit") version "1.0.7"
-  id("org.sonarqube") version "3.0"
+  id("pl.droidsonroids.jacoco.testkit") version "1.0.9"
+  id("org.sonarqube") version "3.2.0"
 }
 
 group = "edu.umich.med.michr"
-version = "0.1-SNAPSHOT"
+version = "0.1.2-SNAPSHOT"
 description = "A Gradle plugin for running the H2 database."
 
 repositories {
@@ -19,11 +19,11 @@ repositories {
 }
 
 dependencies {
-  implementation("com.h2database:h2:1.4.200")
+  implementation("com.h2database:h2:2.0.202")
   testImplementation(gradleTestKit())
-  testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
-  testImplementation("org.junit.jupiter:junit-jupiter-params:5.6.2")
-  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
+  testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+  testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
 }
 
 java {

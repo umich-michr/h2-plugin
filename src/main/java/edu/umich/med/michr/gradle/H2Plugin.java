@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. Joshua Raymond
+ * Copyright (c) 2020 The Regents of the University of Michigan - Michigan Institute for Clinical and Health Research.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -61,7 +61,7 @@ public class H2Plugin implements Plugin<Project> {
                                         .setDescription("The h2 artifacts to be processed for this plugin.");
 
     config.defaultDependencies(dependencies -> dependencies.add(project.getDependencies()
-                                                                       .create("com.h2database:h2:1.4.200")));
+                                                                       .create("com.h2database:h2:2.0.202")));
   }
 
   /**

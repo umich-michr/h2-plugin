@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. Joshua Raymond
+ * Copyright (c) 2020 The Regents of the University of Michigan - Michigan Institute for Clinical and Health Research.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -45,7 +45,7 @@ class H2PluginTest {
     BuildResult buildResult = gradleRunner.build();
 
     assertGradleTaskSuccess(buildResult, DEPENDENCIES_TASK);
-    assertTrue(buildResult.getOutput().contains("com.h2database:h2:1.4.200"), "H2 dependency missing");
+    assertTrue(buildResult.getOutput().contains("com.h2database:h2:2.0.202"), "H2 dependency missing");
   }
 
   @Test
