@@ -51,12 +51,12 @@ class H2PluginTest {
   @Test
   @DisplayName("H2 Database user configured dependency")
   void testH2UserOverrideDependency() throws IOException {
-    String buildFileDependencies = "dependencies {\"h2\"(\"com.h2database:h2:1.4.197\")}";
+    String buildFileDependencies = "dependencies {\"h2\"(\"com.h2database:h2:2.0.202\")}";
     createGradleBuildFiles(temporaryProjectDirectory, buildFileDependencies);
     GradleRunner gradleRunner = setupGradleTask(temporaryProjectDirectory, DEPENDENCIES_TASK);
     BuildResult buildResult = gradleRunner.build();
 
     assertGradleTaskSuccess(buildResult, DEPENDENCIES_TASK);
-    assertTrue(buildResult.getOutput().contains("com.h2database:h2:1.4.197"), "H2 dependency missing");
+    assertTrue(buildResult.getOutput().contains("com.h2database:h2:2.0.202"), "H2 dependency missing");
   }
 }
