@@ -10,7 +10,7 @@ plugins {
 }
 
 group = 'edu.umich.med.michr'
-version = '0.1.2'
+version = '1.0.0'
 description = 'A Gradle plugin for running the H2 database.'
 
 repositories {
@@ -26,8 +26,8 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
     withJavadocJar()
     withSourcesJar()
 }

@@ -1,70 +1,87 @@
-/*
- * Copyright (c) 2020 The Regents of the University of Michigan - Michigan Institute for Clinical and Health Research.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
- * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
- * Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
- * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package edu.umich.med.michr.gradle;
 
-/**
- * This is the Gradle extension that configures the H2 plugin. All configuration options will be in the {@code h2} block
- * of the build.gradle file. This block consists of optional configuration settings to run H2 tasks.
- */
-public class H2PluginExtension {
-  /**
-   * Default H2 TCP port
-   */
-  public static final int DEFAULT_TCP_PORT = 9092;
-  /**
-   * Default H2 TCP password
-   */
-  public static final String DEFAULT_TCP_PASSWORD = "default";
-  /**
-   * Default H2 Web port
-   */
-  public static final int DEFAULT_WEB_PORT = 8082;
+import org.gradle.api.Project;
+import org.gradle.api.artifacts.Configuration;
+import org.gradle.api.artifacts.Dependency;
+import org.gradle.api.provider.Property;
+import org.h2.engine.Constants;
 
-  private int tcpPort;
-  private String tcpPassword;
-  private int webPort;
+public abstract class H2PluginExtension {
+  static final String MAIN_CLASS="org.h2.tools.Server";
+  static final String RUNTIME_DEPENDENCY="com.h2database:h2:2.0.202";
+  private static final String DEFAULT_TCP_PASSWORD= "admin";
+  private static final String DEFAULT_WEB_ADMIN_PASSWORD= "admin";
 
+  public abstract Property<String> getMainClass();
+  public abstract Property<String> getRuntimeDependency();
+
+  public abstract Property<Integer> getTcpPort();
+  public abstract Property<Integer> getWebPort();
+
+  public abstract Property<String> getTcpPassword();
+  public abstract Property<String> getWebAdminPassword();
+
+  public abstract Property<Boolean> getIfNotExists();
+  public abstract Property<Boolean> getTcpAllowOthers();
+  public abstract Property<Boolean> getWebAllowOthers();
+  public abstract Property<Boolean> getBrowser();
+
+  @SuppressWarnings("java:S5993")
   public H2PluginExtension() {
-    tcpPort = DEFAULT_TCP_PORT;
-    tcpPassword = DEFAULT_TCP_PASSWORD;
-    webPort = DEFAULT_WEB_PORT;
+    this.getMainClass().convention(MAIN_CLASS);
+    this.getRuntimeDependency().convention(RUNTIME_DEPENDENCY);
+    this.getTcpPort().convention(Constants.DEFAULT_TCP_PORT);
+    this.getWebPort().convention(Constants.DEFAULT_HTTP_PORT);
+    this.getTcpPassword().convention(DEFAULT_TCP_PASSWORD);
+    this.getWebAdminPassword().convention(DEFAULT_WEB_ADMIN_PASSWORD);
+    this.getIfNotExists().convention(true);
+    this.getTcpAllowOthers().convention(true);
+    this.getWebAllowOthers().convention(true);
+    this.getBrowser().convention(false);
   }
 
-  public int getTcpPort() {
-    return tcpPort;
+  /**
+   *
+   * @param project The gradle project that applies this plugin
+   * @return The gradle build dependency config that specifies the h2 jar file in the form of a maven artifact.
+   */
+  public Configuration buildClassPathConfig(Project project){
+    final Dependency h2Dependency = project.getDependencies().create(getRuntimeDependency().get());
+    return project.getConfigurations().detachedConfiguration(h2Dependency);
   }
 
-  public void setTcpPort(int tcpPort) {
-    this.tcpPort = tcpPort;
+  /**
+   * Builds the parameters that will be passed to the main method of H2 db executable jar file to start the db.
+   * @return Main method arguments as a string for H2 db server
+   */
+  public String buildH2StartMainArgs(){
+    String cmdArgs = String.format("-tcp -tcpPort %d -tcpPassword %s -web -webPort %d -webAdminPassword %s",
+                  getTcpPort().get(), getTcpPassword().get(), getWebPort().get(), getWebAdminPassword().get());
+    StringBuilder commandArgsBuilder = new StringBuilder(cmdArgs);
+
+    if(getIfNotExists().get().equals(Boolean.TRUE)){
+      commandArgsBuilder.append(" -ifNotExists");
+    }else{
+      commandArgsBuilder.append(" -ifExists");
+    }
+    if(getTcpAllowOthers().get().equals(Boolean.TRUE)){
+      commandArgsBuilder.append(" -tcpAllowOthers");
+    }
+    if(getWebAllowOthers().get().equals(Boolean.TRUE)){
+      commandArgsBuilder.append(" -webAllowOthers");
+    }
+    if(getBrowser().get().equals(Boolean.TRUE)){
+      commandArgsBuilder.append(" -browser");
+    }
+
+    return commandArgsBuilder.toString();
   }
 
-  public String getTcpPassword() {
-    return tcpPassword;
-  }
-
-  public void setTcpPassword(String tcpPassword) {
-    this.tcpPassword = tcpPassword;
-  }
-
-  public int getWebPort() {
-    return webPort;
-  }
-
-  public void setWebPort(int webPort) {
-    this.webPort = webPort;
+  /**
+   * Builds the parameters that will be passed to the main method of H2 db executable jar file to stop the db.
+   * @return Main method arguments as a string for H2 db server
+   */
+  public String getH2StopMainArgs() {
+    return String.format("-tcpShutdown tcp://localhost:%d -tcpPassword %s",getTcpPort().get(),getTcpPassword().get());
   }
 }

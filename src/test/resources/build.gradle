@@ -1,0 +1,32 @@
+import java.nio.file.Paths
+// If you don't use GradleRunner.create().withPluginClasspath() in your test then you will need to create a buildscript
+// block pointing at the build directory of the plugin and use apply clause to apply plugin to the project.
+// The snippet below is to create the buildscript block dynamically inside the java unit test and apply plugin clause
+// below is to replace the plugins blcok below it
+//private static final String BUILDSCRIPT_BLOCK= "buildscript {\n" +
+//        "    dependencies{\n" +
+//        "        classpath fileTree(dir: '"+ Paths.get(System.getProperty("user.dir"))+"/build/libs', include: '*.jar')\n" +
+//        "    }\n" +
+//        "}\n\n";
+
+//apply plugin: 'edu.umich.med.michr.h2-plugin'
+
+plugins { id 'edu.umich.med.michr.h2-plugin' }
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+h2 {
+   mainClass='org.h2.tools.Server'
+   runtimeDependency='com.h2database:h2:1.4.200'
+   tcpPort=9095
+   webPort=8085
+   tcpPassword='tisadmin'
+   tcpAllowOthers=false
+   webAdminPassword='tisadmin'
+   webAllowOthers=false
+   browser=false
+   ifNotExists=true
+}
