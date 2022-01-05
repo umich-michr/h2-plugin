@@ -10,7 +10,7 @@ plugins {
 }
 
 group = 'edu.umich.med.michr'
-version = '1.0.0'
+version = '1.0.1'
 description = 'A Gradle plugin for running the H2 database.'
 
 repositories {
@@ -18,7 +18,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.h2database:h2:2.0.202'
+    compileOnly 'com.h2database:h2:2.0.202'
+    testCompileOnly 'com.h2database:h2:2.0.202'
     testImplementation gradleTestKit()
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
